@@ -2,6 +2,8 @@ import React, { Component } from "react";
 import Menu from "./MenuComponent";
 import Home from "./HomeComponent";
 import Dishdetail from "./DishdetailComponent";
+import Contact from "./ContactComponent";
+import About from "./AboutComponent";
 import { View, Platform } from "react-native";
 import { createStackNavigator } from "react-navigation-stack";
 import { createAppContainer } from "react-navigation";
@@ -46,6 +48,42 @@ const HomeNavigator = createStackNavigator(
 
 // const HomeNavigatorApp = createAppContainer(HomeNavigator);
 
+const ContactNavigator = createStackNavigator(
+  {
+    Contact: { screen: Contact },
+  },
+  {
+    initialRouteName: "Contact",
+    navigationOptions: {
+      headerStyle: {
+        backgroundColor: "#512DA8",
+      },
+      headerTintColor: "#fff",
+      headerTitleStyle: {
+        color: "#fff",
+      },
+    },
+  }
+);
+
+const AboutNavigator = createStackNavigator(
+  {
+    About: { screen: About },
+  },
+  {
+    initialRouteName: "About",
+    navigationOptions: {
+      headerStyle: {
+        backgroundColor: "#512DA8",
+      },
+      headerTintColor: "#fff",
+      headerTitleStyle: {
+        color: "#fff",
+      },
+    },
+  }
+);
+
 const MainNavigator = createDrawerNavigator(
   {
     Home: {
@@ -55,11 +93,25 @@ const MainNavigator = createDrawerNavigator(
         drawerLabel: "Home",
       },
     },
+    About: {
+      screen: AboutNavigator,
+      navigationOptions: {
+        title: "About",
+        drawerLabel: "About Us",
+      },
+    },
     Menu: {
       screen: MenuNavigator,
       navigationOptions: {
         title: "Menu",
         drawerLabel: "Menu",
+      },
+    },
+    Contact: {
+      screen: ContactNavigator,
+      navigationOptions: {
+        title: "Contact",
+        drawerLabel: "Contact Us",
       },
     },
   },
@@ -76,8 +128,8 @@ class Main extends Component {
       <View
         style={{
           flex: 1,
-          paddingTop:
-            Platform.OS === "ios" ? 0 : Expo.Constants.statusBarHeight,
+          paddingTop: 0,
+          //Platform.OS === "ios" ? 0 : Expo.Constants.statusBarHeight,
         }}
       >
         <MainNavigatorApp />
