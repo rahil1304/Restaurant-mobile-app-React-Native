@@ -1,3 +1,4 @@
+//json-server --watch db.json -d 2000 -p 3001
 import React, { Component } from "react";
 import Menu from "./MenuComponent";
 import Home from "./HomeComponent";
