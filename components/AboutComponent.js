@@ -2,6 +2,7 @@ import React, { Component } from "react";
 import { ScrollView, Text, FlatList } from "react-native";
 import { Card, ListItem } from "react-native-elements";
 import { LEADERS } from "../shared/leaders";
+import { SafeAreaView } from "react-native-safe-area-context";
 
 function History() {
   return (
@@ -45,7 +46,7 @@ class About extends Component {
       );
     };
     return (
-      <ScrollView>
+      <SafeAreaView style={{ flex: 1 }}>
         <History />
         <Card title='Corporate Leadership'>
           <FlatList
@@ -54,7 +55,7 @@ class About extends Component {
             keyExtractor={(item) => item.id.toString()}
           />
         </Card>
-      </ScrollView>
+      </SafeAreaView>
     );
   }
 }
