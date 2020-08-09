@@ -7,6 +7,7 @@ import {
   Picker,
   Switch,
   Button,
+  Modal,
 } from "react-native";
 import { Card } from "react-native-elements";
 import DatePicker from "react-native-datepicker";
@@ -58,7 +59,7 @@ class Reservation extends Component {
           <Switch
             style={styles.formItem}
             value={this.state.smoking}
-            onTintColor='512DA8'
+            trackColor='#512DA8'
             onValueChange={(value) => this.setState({ smoking: value })}
           ></Switch>
         </View>
