@@ -11,6 +11,7 @@ import {
 } from "react-native";
 import { Card } from "react-native-elements";
 import DatePicker from "react-native-datepicker";
+import DateTimePicker from "@react-native-community/datetimepicker";
 
 class Reservation extends Component {
   constructor(props) {
@@ -98,6 +99,14 @@ class Reservation extends Component {
               this.setState({ date: date });
             }}
           />
+          {/* <DateTimePicker
+            testID='dateTimePicker'
+            value={new Date()}
+            mode='datetime'
+            onChange={(date) => {
+              this.setState({ date: date });
+            }}
+          /> */}
         </View>
         <View style={styles.formRow}>
           <Button
