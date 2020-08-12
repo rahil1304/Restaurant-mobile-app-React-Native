@@ -16,18 +16,18 @@ export const fetchComments = () => (dispatch) => {
         }
       },
       (error) => {
-        var errMess = new Error(error.message);
-        throw errMess;
+        var errmess = new Error(error.message);
+        throw errmess;
       }
     )
     .then((response) => response.json())
     .then((comments) => dispatch(addComments(comments)))
-    .catch((error) => dispatch(commentsFailled(error.message)));
+    .catch((error) => dispatch(commentsFailed(error.message)));
 };
 
-export const commentsFailled = (errMess) => ({
+export const commentsFailed = (errmess) => ({
   type: ActionTypes.COMMENTS_FAILED,
-  payload: errMess,
+  payload: errmess,
 });
 
 export const addComments = (comments) => ({
@@ -52,8 +52,8 @@ export const fetchDishes = () => (dispatch) => {
         }
       },
       (error) => {
-        var errMess = new Error(error.message);
-        throw errMess;
+        var errmess = new Error(error.message);
+        throw errmess;
       }
     )
     .then((response) => response.json())
@@ -65,9 +65,9 @@ export const dishesLoading = () => ({
   type: ActionTypes.DISHES_LOADING,
 });
 
-export const dishesFailed = (errMess) => ({
+export const dishesFailed = (errmess) => ({
   type: ActionTypes.DISHES_FAILED,
-  payload: errMess,
+  payload: errmess,
 });
 
 export const addDishes = (dishes) => ({
@@ -77,6 +77,7 @@ export const addDishes = (dishes) => ({
 
 export const fetchPromos = () => (dispatch) => {
   dispatch(promosLoading());
+
   return fetch(baseUrl + "promotions")
     .then(
       (response) => {
@@ -91,31 +92,32 @@ export const fetchPromos = () => (dispatch) => {
         }
       },
       (error) => {
-        var errMess = new Error(error.message);
-        throw errMess;
+        var errmess = new Error(error.message);
+        throw errmess;
       }
     )
     .then((response) => response.json())
-    .then((promotions) => dispatch(addPromos(promotions)))
-    .catch((error) => dispatch(promosFailled(error.message)));
+    .then((promos) => dispatch(addPromos(promos)))
+    .catch((error) => dispatch(promosFailed(error.message)));
 };
 
 export const promosLoading = () => ({
   type: ActionTypes.PROMOS_LOADING,
 });
 
-export const promosFailled = (errMess) => ({
+export const promosFailed = (errmess) => ({
   type: ActionTypes.PROMOS_FAILED,
-  payload: errMess,
+  payload: errmess,
 });
 
-export const addPromos = (promotions) => ({
+export const addPromos = (promos) => ({
   type: ActionTypes.ADD_PROMOS,
-  payload: promotions,
+  payload: promos,
 });
 
 export const fetchLeaders = () => (dispatch) => {
   dispatch(leadersLoading());
+
   return fetch(baseUrl + "leaders")
     .then(
       (response) => {
@@ -130,22 +132,22 @@ export const fetchLeaders = () => (dispatch) => {
         }
       },
       (error) => {
-        var errMess = new Error(error.message);
-        throw errMess;
+        var errmess = new Error(error.message);
+        throw errmess;
       }
     )
     .then((response) => response.json())
     .then((leaders) => dispatch(addLeaders(leaders)))
-    .catch((error) => dispatch(leadersFailled(error.message)));
+    .catch((error) => dispatch(leadersFailed(error.message)));
 };
 
 export const leadersLoading = () => ({
   type: ActionTypes.LEADERS_LOADING,
 });
 
-export const leadersFailled = (errMess) => ({
+export const leadersFailed = (errmess) => ({
   type: ActionTypes.LEADERS_FAILED,
-  payload: errMess,
+  payload: errmess,
 });
 
 export const addLeaders = (leaders) => ({
@@ -161,5 +163,29 @@ export const postFavorite = (dishId) => (dispatch) => {
 
 export const addFavorite = (dishId) => ({
   type: ActionTypes.ADD_FAVORITE,
+  payload: dishId,
+});
+
+export const addComment = (comment) => ({
+  type: ActionTypes.ADD_COMMENT,
+  payload: comment,
+});
+
+export const postComment = (dishId, rating, comment, author) => (dispatch) => {
+  const newComment = {
+    author: author,
+    comment: comment,
+    dishId: dishId,
+    rating: rating,
+  };
+  newComment.date = new Date().toISOString();
+
+  setTimeout(() => {
+    dispatch(addComment(newComment));
+  }, 2000);
+};
+
+export const deleteFavorite = (dishId) => ({
+  type: ActionTypes.DELETE_FAVORITE,
   payload: dishId,
 });
