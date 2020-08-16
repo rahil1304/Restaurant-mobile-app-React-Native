@@ -13,7 +13,8 @@ import { Card } from "react-native-elements";
 import DatePicker from "react-native-datepicker";
 import Modal from "react-native-modal";
 import * as Animatable from "react-native-animatable";
-import { Permissions, Notifications } from "expo";
+import * as Notifications from "expo-notifications";
+import * as Permissions from "expo-permissions";
 
 class Reservation extends Component {
   constructor(props) {
