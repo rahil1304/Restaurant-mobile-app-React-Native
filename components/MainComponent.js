@@ -97,21 +97,6 @@ const MenuNavigator = createStackNavigator(
 // const MenuNavigatorApp = createAppContainer(MenuNavigator);
 
 const HomeNavigator = createStackNavigator({
-  Login: {
-    screen: LoginNavigator,
-    navigationOptions: {
-      title: "Login",
-      drawerLabel: "Login",
-      drawerIcon: ({ tintColor, focused }) => (
-        <Icon
-          name='sign-in'
-          type='font-awesome'
-          size={24}
-          iconStyle={{ color: tintColor }}
-        />
-      ),
-    },
-  },
   Home: {
     screen: Home,
     navigationOptions: ({ navigation }) => ({
