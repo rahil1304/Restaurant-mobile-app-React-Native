@@ -1,14 +1,20 @@
 import React, { Component } from "react";
 import { View, StyleSheet, Text, ScrollView, Image } from "react-native";
 import { Input, CheckBox, Button, Icon } from "react-native-elements";
-import { SecureStore, Permissions, ImagePicker } from "expo";
-import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
+import {
+  Camera,
+  Permissions,
+  ImagePicker,
+  Asset,
+  ImageManipulator,
+} from "expo";
+import * as SecureStore from "expo-secure-store";
+import { createBottomTabNavigator } from "react-navigation";
 import { baseUrl } from "../shared/baseUrl";
 
 class LoginTab extends Component {
   constructor(props) {
     super(props);
-
     this.state = {
       username: "",
       password: "",
@@ -63,21 +69,21 @@ class LoginTab extends Component {
           leftIcon={{ type: "font-awesome", name: "user-o" }}
           onChangeText={(username) => this.setState({ username })}
           value={this.state.username}
-          containerStyle={styles.formInput}
+          inputContainerStyle={styles.formInput}
         />
         <Input
           placeholder='Password'
           leftIcon={{ type: "font-awesome", name: "key" }}
           onChangeText={(password) => this.setState({ password })}
           value={this.state.password}
-          containerStyle={styles.formInput}
+          inputContainerStyle={styles.formInput}
         />
         <CheckBox
           title='Remember Me'
           center
           checked={this.state.remember}
           onPress={() => this.setState({ remember: !this.state.remember })}
-          containerStyle={styles.formCheckbox}
+          inputContainerStyle={styles.formCheckbox}
         />
         <View style={styles.formButton}>
           <Button
@@ -150,7 +156,35 @@ class RegisterTab extends Component {
       });
       if (!capturedImage.cancelled) {
         console.log(capturedImage);
-        this.setState({ imageUrl: capturedImage.uri });
+        this.processImage(capturedImage.uri);
+      }
+    }
+  };
+
+  processImage = async (imageUri) => {
+    let processedImage = await ImageManipulator.manipulate(
+      imageUri,
+      [{ resize: { width: 400 } }],
+      { format: "png" }
+    );
+    console.log(processedImage);
+    this.setState({ imageUrl: processedImage.uri });
+  };
+
+  getImageFromGallery = async () => {
+    const cameraRollPermission = await Permissions.askAsync(
+      Permissions.CAMERA_ROLL
+    );
+
+    if (cameraRollPermission.status === "granted") {
+      const libraryImage = await ImagePicker.launchImageLibraryAsync({
+        allowsEditing: true,
+        aspect: [4, 3],
+        mediaTypes: "Images",
+      });
+
+      if (!libraryImage.cancelled) {
+        this.processImage(libraryImage.uri);
       }
     }
   };
@@ -190,48 +224,49 @@ class RegisterTab extends Component {
               style={styles.image}
             />
             <Button title='Camera' onPress={this.getImageFromCamera} />
+            <Button title='Gallery' onPress={this.getImageFromGallery} />
           </View>
           <Input
             placeholder='Username'
             leftIcon={{ type: "font-awesome", name: "user-o" }}
             onChangeText={(username) => this.setState({ username })}
             value={this.state.username}
-            containerStyle={styles.formInput}
+            inputContainerStyle={styles.formInput}
           />
           <Input
             placeholder='Password'
             leftIcon={{ type: "font-awesome", name: "key" }}
             onChangeText={(password) => this.setState({ password })}
             value={this.state.password}
-            containerStyle={styles.formInput}
+            inputContainerStyle={styles.formInput}
           />
           <Input
             placeholder='First Name'
             leftIcon={{ type: "font-awesome", name: "user-o" }}
             onChangeText={(lastname) => this.setState({ firstname })}
             value={this.state.firstname}
-            containerStyle={styles.formInput}
+            inputContainerStyle={styles.formInput}
           />
           <Input
             placeholder='Last Name'
             leftIcon={{ type: "font-awesome", name: "user-o" }}
             onChangeText={(lastname) => this.setState({ lastname })}
             value={this.state.lastname}
-            containerStyle={styles.formInput}
+            inputContainerStyle={styles.formInput}
           />
           <Input
             placeholder='Email'
             leftIcon={{ type: "font-awesome", name: "envelope-o" }}
             onChangeText={(email) => this.setState({ email })}
             value={this.state.email}
-            containerStyle={styles.formInput}
+            inputContainerStyle={styles.formInput}
           />
           <CheckBox
             title='Remember Me'
             center
             checked={this.state.remember}
             onPress={() => this.setState({ remember: !this.state.remember })}
-            containerStyle={styles.formCheckbox}
+            inputContainerStyle={styles.formCheckbox}
           />
           <View style={styles.formButton}>
             <Button
@@ -265,6 +300,7 @@ const styles = StyleSheet.create({
     flex: 1,
     flexDirection: "row",
     margin: 20,
+    justifyContent: "space-between",
   },
   image: {
     margin: 10,
